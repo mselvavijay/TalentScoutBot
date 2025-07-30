@@ -3,9 +3,8 @@ import requests
 from prompts import SYSTEM_PROMPT, QUESTION_PROMPT_TEMPLATE, FALLBACK_QUESTIONS
 
 # Load API key
-import streamlit as st
 
-OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
+OPENROUTER_API_KEY ="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"
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def generate_questions_with_mistral(tech_stack):
