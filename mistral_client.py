@@ -3,7 +3,7 @@ import requests
 from prompts import SYSTEM_PROMPT, QUESTION_PROMPT_TEMPLATE, FALLBACK_QUESTIONS
 
 # Load API key
-OPENROUTER_API_KEY ="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"
+OPENROUTER_API_KEY ="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"
 BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def generate_questions_with_mistral(tech_stack):
