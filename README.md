@@ -17,8 +17,8 @@ It collects essential candidate information, evaluates their **tech stack**, and
 
 ## ⚙️ **Installation Instructions**
 
-## 1. Clone the Repository
 ```bash
+## 1. Clone the REpository
 git clone https://github.com/your-username/TalentScout.git
 cd TalentScout
 
@@ -50,18 +50,23 @@ streamlit run app.py
 
 6. Finish interview → Data is stored in candidates.csv
 
-#  Technical Details  #
+## 🛠 **Tech Stack**
 
-1. Language: Python 3.10+
-
-2. Frontend: Streamlit
-
-3. LLM: Mistral 7B ( via OpenRouter API)
-
-4. Data Storage: CSV (candidates.csv)
+- **Frontend:** Streamlit  
+- **LLM:** Mistral 7B / OpenRouter API  
+- **Backend:** Python  
+- **Storage:** CSV for candidate data (simulated data for privacy)  
 
 #  Prompt Design  #
 '''Prompts are stored in prompts.py: '''
+
+##
+| Challenge                          | Solution                                                |
+| ---------------------------------- | ------------------------------------------------------- |
+| API returning 404 errors           | Switched to OpenRouter-compatible model endpoint        |
+| Conflicts in GitHub push           | Created repo without default README / .gitignore        |
+| Textbox not clearing after answers | Added `st.session_state` fix for better user experience |
+
 
 
 
