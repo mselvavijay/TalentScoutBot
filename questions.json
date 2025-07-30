@@ -1,0 +1,37 @@
+{
+  "python": [
+    "What are Python decorators and when would you use them?",
+    "Explain the difference between deep copy and shallow copy in Python.",
+    "What is the difference between @staticmethod and @classmethod?",
+    "How does Python's garbage collection work?",
+    "Explain the concept of list comprehension with an example."
+  ],
+  "django": [
+    "What is the difference between a model and a form in Django?",
+    "How does Django ORM work?",
+    "Explain Django middleware with an example.",
+    "How can you optimize queries in Django?",
+    "What are Django signals and how are they used?"
+  ],
+  "aws": [
+    "What is AWS EC2 and when would you use it?",
+    "Explain the concept of S3 buckets.",
+    "What is AWS Lambda and how is it different from EC2?",
+    "How do you secure AWS resources?",
+    "What are IAM roles in AWS?"
+  ],
+  "default": [
+    "Explain the concept of REST APIs.",
+    "What is version control and why is it important?",
+    "What are microservices and their advantages?",
+    "Explain continuous integration and continuous deployment (CI/CD).",
+    "What are common software testing strategies?"
+  ],
+  "ai": [
+  "What is the difference between supervised and unsupervised learning?",
+  "Explain overfitting and how to prevent it.",
+  "What is gradient descent and why is it important in AI?",
+  "What are embeddings in AI models?",
+  "Explain the difference between a neural network and a deep neural network."
+]
+}
