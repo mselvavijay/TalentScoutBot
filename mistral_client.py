@@ -1,68 +1,57 @@
-import requests
 import os
+import requests
+from prompts import SYSTEM_PROMPT, QUESTION_PROMPT_TEMPLATE, FALLBACK_QUESTIONS
 
-FALLBACK_QUESTIONS = {
-    "django": [
-        "Explain Django's MVT architecture.",
-        "How does Django ORM work?",
-        "What are Django signals and their use cases?",
-        "Explain the use of Django middleware.",
-        "How to optimize database queries in Django?"
-    ],
-    "react": [
-        "What are React hooks?",
-        "Explain the difference between functional and class components.",
-        "What is JSX and why is it used?",
-        "Explain the concept of virtual DOM in React.",
-        "How do you manage state in large React applications?"
-    ],
-    "ai": [
-        "What is the difference between supervised and unsupervised learning?",
-        "Explain the architecture of a transformer model.",
-        "What is fine-tuning in AI?",
-        "Explain the difference between CNN and RNN.",
-        "What are embeddings in NLP?"
-    ]
-}
+# Load API key
+OPENROUTER_API_KEY ="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"
+BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-def call_mistral_api(tech_stack):
-    API_KEY = os.getenv("OPENROUTER_API_KEY")
-    url = "https://openrouter.ai/api/v1/chat/completions"
+def generate_questions_with_mistral(tech_stack):
+    """
+    Generates 8 varied technical questions based on the candidate's tech stack.
+    Falls back to default questions if API fails.
+    """
 
-    prompt = f"Generate 10 unique technical interview questions for: {tech_stack}. Number them clearly."
+    if not OPENROUTER_API_KEY:
+        print("⚠️ No API key found. Using fallback questions.")
+        return "\n".join(FALLBACK_QUESTIONS)
 
     headers = {
-        "Authorization": f"Bearer {API_KEY}",
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json"
     }
 
     payload = {
         "model": "mistralai/mistral-7b-instruct:free",
         "messages": [
-            {"role": "system", "content": "You are an AI technical interviewer."},
-            {"role": "user", "content": prompt}
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": QUESTION_PROMPT_TEMPLATE.format(
+                    tech_stack=tech_stack,
+                    num_questions=8
+                )
+            }
         ]
     }
 
     try:
-        res = requests.post(url, headers=headers, json=payload)
-        if res.status_code == 200:
-            return res.json()["choices"][0]["message"]["content"].split("\n")
+        # Debug: show outgoing request
+        print("🔍 DEBUG: Sending payload:", payload)
+
+        response = requests.post(BASE_URL, headers=headers, json=payload)
+        print("🔍 DEBUG: API raw response:", response.text)
+
+        response.raise_for_status()
+        data = response.json()
+
+        if "choices" in data and len(data["choices"]) > 0:
+            questions_text = data["choices"][0]["message"]["content"].strip()
+            return questions_text if questions_text else "\n".join(FALLBACK_QUESTIONS)
         else:
-            return []
-    except:
-        return []
+            print("⚠️ No choices returned in API response.")
+            return "\n".join(FALLBACK_QUESTIONS)
 
-def generate_questions(tech_stack):
-    questions = call_mistral_api(tech_stack)
-
-    # If API fails or returns generic content, use fallback
-    if not questions or not any(stack.lower() in " ".join(questions).lower() for stack in tech_stack.split(",")):
-        result = []
-        for stack in tech_stack.split(","):
-            stack = stack.strip().lower()
-            if stack in FALLBACK_QUESTIONS:
-                result.extend(FALLBACK_QUESTIONS[stack])
-        return result
-    
-    return questions
+    except Exception as e:
+        print(f"⚠️ API Error: {e}")
+        return "\n".join(FALLBACK_QUESTIONS)
