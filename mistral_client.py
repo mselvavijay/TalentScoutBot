@@ -15,12 +15,18 @@ def generate_questions_with_mistral(tech_stack):
     }
 
     payload = {
-        "model": "mistralai/mistral-7b-instruct:free",
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": QUESTION_PROMPT_TEMPLATE.format(tech_stack=tech_stack)}
-        ]
+    "model": "mistralai/mistral-7b-instruct:free",
+    "messages": [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": QUESTION_PROMPT_TEMPLATE.format(
+            tech_stack=tech_stack,
+            num_questions=10  # Force 10 questions
+        )}
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9
     }
+
 
     try:
         response = requests.post(BASE_URL, headers=headers, json=payload)
